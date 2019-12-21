@@ -25,4 +25,5 @@ Current: 100 mA
 |  1 | U PIC12F1501-I/SN (SOIC-8)                | U1      | PIC12F1501-I/SN-ND         |
 |  1 | VR R-78HE5.0-0.3                          | VR1     | 945-3461-ND                |
 |  1 | H 1593KBK                                 |         | HM355-ND                   |
+|  4 | H PCB Screw Self-tapping M3 6mm (#4 1/4") |         | SR6004-ND                  |
 |  1 | S Momentary {560}                         |         | 1528-2542-ND               |
