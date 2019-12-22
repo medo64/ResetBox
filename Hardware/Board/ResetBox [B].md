@@ -15,7 +15,7 @@ Current: 100 mA
 |  1 | D Shottky 30V LowVf {SDM100K30L} (SOD323) | D1      | SDM100K30LDIDKR-ND         |
 |  1 | D Bridge (SMD-4)                          | D2      | 1655-1817-1-ND             |
 |  2 | DS LED (0805)                             | DS1-DS2 | 475-1415-1-ND              |
-|  3 | J Barrel                                  | J1-J3   | 839-1514-ND                |
+|  3 | J Barrel 2.1x5.5mm                        | J1-J3   | 839-1514-ND                |
 |  1 | J JST S3B-XH-A (3w)                       | J4      | 455-2250-ND                |
 |  1 | K Relay 5V 2A DPDT (FormC)                | K1      | PB383-ND                   |
 |  1 | L Inductor (SMD)                          | L1      | RLS-686                    |
