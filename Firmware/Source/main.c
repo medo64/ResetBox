@@ -8,6 +8,7 @@
 #define RESET_COUNTER  20
 
 uint16_t debounceCounter = 0;
+uint8_t intensityCounter = 0;
 
 void main(void) {
     init();
@@ -18,7 +19,12 @@ void main(void) {
         watchdog();
 
         if (io_switch()) {
-            if (debounceCounter < DEBOUNCE_MAX) { debounceCounter++; } else { io_led_off(); }
+            if (debounceCounter < DEBOUNCE_MAX) {
+                debounceCounter++;
+            } else {
+                intensityCounter++;
+                if ((intensityCounter % 8) == 0) { io_led_on(); } else { io_led_off(); }
+            }
         } else {
             if (debounceCounter == DEBOUNCE_MAX) {
                 io_relay_on();
