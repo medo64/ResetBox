@@ -12,5 +12,5 @@ void init(void) {
     //PORTA [- - I O - O - -]   [- - CFG1 LED SWITCH RELAY/AUX CFG3 CFG2]
     LATA   = 0b00000000;
     WPUA   = 0b00010000;
-    TRISA  = 0b11001100;
+    TRISA  = 0b11001000;
 }

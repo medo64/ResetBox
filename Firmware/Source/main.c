@@ -13,6 +13,8 @@ uint8_t intensityCounter = 0;
 void main(void) {
     init();
     io_startup();
+    io_20V();
+    io_relay_on();
 
     io_led_on();
     while(true) {
