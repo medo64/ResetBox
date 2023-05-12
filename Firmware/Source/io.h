@@ -11,6 +11,6 @@
     #define io_relay_off()  LATAbits.LATA2 = 1;
     #define io_relay_on()   LATAbits.LATA2 = 0;
 
-    #define io_switch()     PORTAbits.RA5
+    #define io_switch()     PORTAbits.RA3
 
 #endif	/* IO_H */
