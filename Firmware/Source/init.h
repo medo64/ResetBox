@@ -9,9 +9,16 @@
 
 // CONFIG2
 #pragma config WRT = ALL        // Flash Memory Self-Write Protection (000h to 1FFFh write protected, no addresses may be modified by EECON control)
+#if defined(_12F1571)
+    #pragma config PLLEN = OFF  // PLL Disable
+#endif
 #pragma config STVREN = ON      // Stack Overflow/Underflow Reset Enable (Stack Overflow or Underflow will cause a Reset)
 #pragma config BORV = HI        // Brown-out Reset Voltage Selection (Brown-out Reset Voltage (Vbor), high trip point selected.)
-#pragma config LPBOR = ON       // Low-Power Brown Out Reset (Low-Power BOR is enabled)
+#if defined(_12F1571)
+    #pragma config LPBOREN = ON // Low-Power Brown Out Reset (Low-Power BOR is enabled)
+#else
+    #pragma config LPBOR = ON   // Low-Power Brown Out Reset (Low-Power BOR is enabled)
+#endif
 #pragma config LVP = OFF        // Low-Voltage Programming Enable (High-voltage on MCLR/VPP must be used for programming)
 
 
