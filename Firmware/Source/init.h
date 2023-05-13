@@ -1,3 +1,5 @@
+#pragma once
+
 // CONFIG1
 #pragma config FOSC = INTOSC    // Oscillator Selection Bits (INTOSC oscillator: I/O function on CLKIN pin)
 #pragma config WDTE = ON        // Watchdog Timer Enable (WDT enabled)
@@ -30,6 +32,7 @@
     #define _XTAL_FREQ 1000000
 
     void init(void);
+    void init2(void);
 
     #define reset()       __asm("RESET")
     #define watchdog()    __asm("CLRWDT")
