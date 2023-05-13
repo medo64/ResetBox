@@ -1,8 +1,8 @@
 #pragma once
 #include <xc.h>
 
-void io_init();
-void io_init2();
+void io_init(void);
+void io_init2(void);
 
 #define io_led_off()      LATAbits.LATA4 = 0;
 #define io_led_on()       LATAbits.LATA4 = 1;

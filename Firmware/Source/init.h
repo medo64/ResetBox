@@ -10,7 +10,7 @@
 #pragma config CLKOUTEN = OFF   // Clock Out Enable (CLKOUT function is disabled. I/O or oscillator function on the CLKOUT pin)
 
 // CONFIG2
-#pragma config WRT = ALL        // Flash Memory Self-Write Protection (000h to 1FFFh write protected, no addresses may be modified by EECON control)
+#pragma config WRT = OFF        // Write protection off
 #if defined(_12F1571)
     #pragma config PLLEN = OFF  // PLL Disable
 #endif

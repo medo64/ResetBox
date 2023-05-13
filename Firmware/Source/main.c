@@ -5,10 +5,11 @@
 #include "init.h"
 #include "io.h"
 #include "timer0.h"
+#include "settings.h"
 
-#define COUNTER_CONFIG_MAX    72  // 3 seconds
-#define COUNTER_RESET_MAX     72  // 3 seconds
-#define COUNTER_POWEROFF_MAX  72  // 3 seconds
+#define COUNTER_CONFIG_MAX     72  // 3 seconds
+#define COUNTER_RESET_MAX      72  // 3 seconds
+#define COUNTER_POWEROFF_MAX  120  // 5 seconds
 
 uint16_t resetCounter = 0;
 uint8_t intensityCounter = 0;
@@ -26,7 +27,7 @@ void setVoltage(uint8_t voltage) {
 void work(void) {
     io_power_on();
     io_led_on();
-    setVoltage(20);
+    setVoltage(settings_getVoltage());
 
     while(true) {
         watchdog();
@@ -73,22 +74,42 @@ void config(void) {
     io_led_off();
     while(io_switch_cfg()) { watchdog(); }  // wait to depress
 
-    uint8_t currentVoltage = 5;
+    uint8_t currentVoltage = settings_getVoltage();
     while(true) {
         watchdog();
         if (io_switch_cfg()) {
             timer0_waitTick();  // poor man's debounce
-            if (io_switch_cfg()) {
-                switch (currentVoltage) {
-                    case 5: currentVoltage = 9; break;
-                    case 9: currentVoltage = 12; break;
-                    case 12: currentVoltage = 15; break;
-                    case 15: currentVoltage = 20; break;
-                    default: currentVoltage = 5; break;
+            if (!io_switch_cfg()) { continue; }
+
+            uint8_t saveCounter = 0;
+            timer0_reset();
+            while (io_switch_cfg()) {  // figure out if it's a long press
+                watchdog();
+                if (timer0_wasTriggered()) {
+                    if (saveCounter > 24) { io_led_toggle(); }  // only toggle once we're after 1 second
+                    saveCounter++;
+                    if (saveCounter == COUNTER_CONFIG_MAX) {  // save settings
+                        io_led_off();
+                        settings_setVoltage(currentVoltage);
+                        settings_save();
+                        io_led_on();
+                        while (io_switch_cfg()) {  // wait for depress
+                            watchdog();
+                        }
+                        reset();  // proceed with normal startup
+                    }
                 }
-                setVoltage(currentVoltage);
-                while (io_switch_cfg()) { watchdog(); }  // wait for depress
             }
+            io_led_off();
+
+            switch (currentVoltage) {
+                case 5: currentVoltage = 9; break;
+                case 9: currentVoltage = 12; break;
+                case 12: currentVoltage = 15; break;
+                case 15: currentVoltage = 20; break;
+                default: currentVoltage = 5; break;
+            }
+            setVoltage(currentVoltage);
         }
 
         if (io_switch_main()) {  // just for troubleshooting
@@ -103,8 +124,11 @@ void main(void) {
     init();
     io_init();
     timer0_init();
-    setVoltage(5);
+    settings_init();
 
+    setVoltage(settings_getVoltage());
+
+    // startup flash
     io_led_on();
     for (uint8_t i = 0; i < 6; i++) {
         watchdog();
@@ -112,6 +136,7 @@ void main(void) {
         io_led_toggle();
     }
 
+    // check for config button
     bool useConfig = false;
     uint8_t waitCounter = 0;
     while (true) {
@@ -132,8 +157,9 @@ void main(void) {
 
     if (useConfig) {
         config();
-    } else {
-        io_init2();
-        work();
     }
+
+    // normal startup
+    io_init2();
+    work();
 }

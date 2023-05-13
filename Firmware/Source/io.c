@@ -1,7 +1,7 @@
 #include "init.h"
 #include "io.h"
 
-void io_init() {
+void io_init(void) {
     //Setup
     nWPUEN = 0; //pullups enabled
 
