@@ -19,7 +19,7 @@ Current: 3A
 |  1 | Q P-MOSFET 30V 4A (SOT-23)                | Q1      | DMP3099L-13DICT-ND         |
 |  1 | R 470 5% 0.125W (0805)                    | R1      | RMCF0805JT470R             |
 | 10 | R 1K 5% 0.125W (0805)                     | R2-R11  | RMCF0805JT1K00             |
-|  7 | R 10K 5% 0.125W (0805)                    | R12-R18 | RMCF0805JT10K0             |
+|  4 | R 10K 5% 0.125W (0805)                    | R12-R15 | RMCF0805JT10K0             |
 |  1 | S Tactile SPST-NO (6x6mm)                 | S1      | 450-1647-ND                |
 |  1 | U PIC12F1501-I/SN (SOIC-8)                | U1      | PIC12F1501-I/SN-ND         |
 |  1 | U 74HC238D (SOIC-16)                      | U2      | 74HC238DCT-ND              |
