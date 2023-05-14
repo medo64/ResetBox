@@ -7,12 +7,11 @@
 #include "timer0.h"
 #include "settings.h"
 
-#define COUNTER_CONFIG_MAX     72  // 3 seconds
-#define COUNTER_RESET_MAX      72  // 3 seconds
-#define COUNTER_POWEROFF_MAX  120  // 5 seconds
+#define COUNTER_CONFIG_MAX     72  //  3 seconds
+#define COUNTER_RESET_MAX      72  //  3 seconds
+#define COUNTER_POWEROFF_MAX  120  //  5 seconds
+#define COUNTER_CANCEL_MAX    240  // 10 seconds
 
-uint16_t resetCounter = 0;
-uint8_t intensityCounter = 0;
 
 void setVoltage(uint8_t voltage) {
     switch (voltage) {
@@ -29,6 +28,8 @@ void work(void) {
     io_led_on();
     setVoltage(settings_getVoltage());
 
+    uint16_t resetCounter = 0;
+
     while(true) {
         watchdog();
 
@@ -39,26 +40,40 @@ void work(void) {
 
                 if (resetCounter == COUNTER_RESET_MAX) {  // held it long enough
                     uint8_t intensityRatioCounter = 0;
+                    uint8_t cancelCounter = 0;
                     while(io_switch_main()) {  // wait until released
                         watchdog();
+                        if (timer0_wasTriggered()) {
+                            cancelCounter++;
+                            if (cancelCounter == COUNTER_CANCEL_MAX) {  // well, canceled reset
+                                io_led_on();
+                                while(io_switch_main()) { watchdog(); }  // wait until released
+                                resetCounter = 0;
+                                continue;  // start from beginning
+                            }
+                        }
+
                         if (intensityRatioCounter == 0) { io_led_on(); } else { io_led_off(); }
                         intensityRatioCounter++;
                         if (intensityRatioCounter > 7) { intensityRatioCounter = 0; }  // just to decrease brightness a bit 
                     }
 
                     // power off
-                    timer0_reset();
-                    io_power_off();
-                    uint8_t powerCounter = 0;
-                    while(powerCounter < COUNTER_POWEROFF_MAX) {
-                        watchdog();
-                        if (timer0_wasTriggered()) {
-                            powerCounter++;
-                            if (powerCounter % 6 == 0) { io_led_toggle(); }
+                    if (resetCounter == COUNTER_RESET_MAX) {
+                        timer0_reset();
+                        io_power_off();
+                        uint8_t powerCounter = 0;
+                        while(powerCounter < COUNTER_POWEROFF_MAX) {
+                            watchdog();
+                            if (timer0_wasTriggered()) {
+                                powerCounter++;
+                                if (powerCounter % 6 == 0) { io_led_toggle(); }
+                            }
                         }
+                        io_power_on();
+                        io_led_on();
+                        resetCounter = 0;
                     }
-                    io_power_on();
-                    io_led_on();
                 }
             }
 

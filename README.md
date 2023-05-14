@@ -7,7 +7,8 @@ is detected. Status will be communicated on external LED.
 #### Operation
 
 Press and hold button for 3 seconds until LED decreases in brightness. Once
-button is released, device will reset.
+button is released, device will reset. If you hold button even longer (additional
+10 second after LED has dimmed) power off operation will be cancelled.
 
 
 #### Set Voltage
