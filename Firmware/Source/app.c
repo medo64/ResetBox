@@ -8,7 +8,7 @@
 #include "settings.h"
 
 #define COUNTER_CONFIG_MAX     72  //  3 seconds
-#define COUNTER_RESET_MAX      72  //  3 seconds
+#define COUNTER_RESET_MAX      48  //  2 seconds
 #define COUNTER_POWEROFF_MAX  120  //  5 seconds
 #define COUNTER_CANCEL_MAX    240  // 10 seconds
 
