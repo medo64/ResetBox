@@ -13,11 +13,14 @@ button is released, device will reset. If you hold button even longer (additiona
 
 #### Set Voltage
 
-During startup hold internal button until ACT LED stop blinking (about 3
-seconds). In config mode, press internal button once for each voltage step. Once
-voltage has been selected, long press internal button to save the value. Once
-blinking stops, release the button and device will start in notmal mode.
+Output devices MUST be disconnected during this time unless they can handle
+full 20 V.
 
+Unplug USB cable and hold internal button while plugging it back in until ACT
+LED stops blinking (about 3 seconds). No you can release button. In config mode,
+press internal button once for each voltage step. Once voltage has been
+selected, long press internal button to save the value. Once blinking stops,
+release the button and device will start normally.
 
 ---
 
